@@ -7,7 +7,9 @@
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:connection": "node scripts/test-connection.js",
+    "seed": "node scripts/seed.js"
   },
   "keywords": [
     "mindflow",

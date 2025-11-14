@@ -1,6 +1,16 @@
+import 'dart:io';
+
 class ApiConfig {
   // Base URLs
-  static const String baseUrlDev = 'http://localhost:3000/api/v1';
+  // Nota: En Android emulador usa 10.0.2.2 para acceder a localhost de la máquina host
+  // En iOS simulator, localhost funciona directamente
+  static String get baseUrlDev {
+    if (Platform.isAndroid) {
+      return 'http://10.0.2.2:3000/api/v1';
+    }
+    return 'http://localhost:3000/api/v1';
+  }
+
   static const String baseUrlProd = 'https://api.mindflow.com/api/v1';
 
   // Current environment

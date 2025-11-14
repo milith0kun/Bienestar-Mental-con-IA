@@ -123,10 +123,7 @@ const testUser = {
 async function seedDatabase() {
   try {
     // Conectar a la base de datos
-    await mongoose.connect(config.mongoUri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(config.mongoUri);
 
     console.log('✓ Conectado a MongoDB');
 
