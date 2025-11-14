@@ -4,6 +4,10 @@ import 'package:provider/provider.dart';
 import 'core/config/router_config.dart';
 import 'core/themes/app_theme.dart';
 import 'presentation/providers/auth_provider.dart';
+import 'presentation/providers/meditation_provider.dart';
+import 'presentation/providers/journal_provider.dart';
+import 'presentation/providers/mood_provider.dart';
+import 'presentation/providers/subscription_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +33,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => AuthProvider(),
         ),
-        // TODO: Add more providers as needed
+        ChangeNotifierProvider(
+          create: (_) => MeditationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => JournalProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MoodProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => SubscriptionProvider(),
+        ),
       ],
       child: Consumer<AuthProvider>(
         builder: (context, authProvider, _) {

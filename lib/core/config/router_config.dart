@@ -9,6 +9,14 @@ import '../../presentation/screens/auth/register_screen.dart';
 import '../../presentation/screens/auth/forgot_password_screen.dart';
 import '../../presentation/screens/home/home_screen.dart';
 import '../../presentation/screens/profile/profile_screen.dart';
+import '../../presentation/screens/meditation/meditation_list_screen.dart';
+import '../../presentation/screens/meditation/meditation_detail_screen.dart';
+import '../../presentation/screens/journal/journal_list_screen.dart';
+import '../../presentation/screens/journal/journal_edit_screen.dart';
+import '../../presentation/screens/mood/mood_log_screen.dart';
+import '../../presentation/screens/mood/mood_history_screen.dart';
+import '../../presentation/screens/subscription/subscription_screen.dart';
+import '../../presentation/screens/settings/notifications_screen.dart';
 
 class RouterConfig {
   static GoRouter router(AuthProvider authProvider) {
@@ -92,7 +100,75 @@ class RouterConfig {
           name: 'profile',
           builder: (context, state) => const ProfileScreen(),
         ),
-        // TODO: Agregar más rutas según sea necesario
+
+        // Meditation routes
+        GoRoute(
+          path: '/meditations',
+          name: 'meditations',
+          builder: (context, state) => const MeditationListScreen(),
+        ),
+        GoRoute(
+          path: '/meditation-detail',
+          name: 'meditationDetail',
+          builder: (context, state) {
+            final meditationId = state.uri.queryParameters['id'] ?? '';
+            return MeditationDetailScreen(meditationId: meditationId);
+          },
+        ),
+
+        // Journal routes
+        GoRoute(
+          path: '/journal',
+          name: 'journal',
+          builder: (context, state) => const JournalListScreen(),
+        ),
+        GoRoute(
+          path: '/journal-create',
+          name: 'journalCreate',
+          builder: (context, state) => const JournalEditScreen(),
+        ),
+        GoRoute(
+          path: '/journal-edit',
+          name: 'journalEdit',
+          builder: (context, state) {
+            final entryId = state.uri.queryParameters['id'];
+            return JournalEditScreen(entryId: entryId);
+          },
+        ),
+        GoRoute(
+          path: '/journal-detail',
+          name: 'journalDetail',
+          builder: (context, state) {
+            final entryId = state.uri.queryParameters['id'];
+            return JournalEditScreen(entryId: entryId);
+          },
+        ),
+
+        // Mood routes
+        GoRoute(
+          path: '/mood-log',
+          name: 'moodLog',
+          builder: (context, state) => const MoodLogScreen(),
+        ),
+        GoRoute(
+          path: '/mood-history',
+          name: 'moodHistory',
+          builder: (context, state) => const MoodHistoryScreen(),
+        ),
+
+        // Subscription routes
+        GoRoute(
+          path: '/subscription',
+          name: 'subscription',
+          builder: (context, state) => const SubscriptionScreen(),
+        ),
+
+        // Settings routes
+        GoRoute(
+          path: '/notifications',
+          name: 'notifications',
+          builder: (context, state) => const NotificationsScreen(),
+        ),
       ],
       errorBuilder: (context, state) => Scaffold(
         body: Center(
