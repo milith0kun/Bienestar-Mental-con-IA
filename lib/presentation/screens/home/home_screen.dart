@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
+import '../stats/stats_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -73,24 +74,27 @@ class _HomeScreenState extends State<HomeScreen> {
             context,
             icon: Icons.self_improvement,
             title: 'Meditaciones',
-            description: 'Próximamente en Sprint 2',
+            description: 'Explora meditaciones guiadas',
             color: Colors.purple,
+            onTap: () => context.push('/meditations'),
           ),
           const SizedBox(height: 16),
           _buildFeatureCard(
             context,
             icon: Icons.book,
             title: 'Diario Emocional',
-            description: 'Próximamente en Sprint 3',
+            description: 'Escribe tus pensamientos',
             color: Colors.blue,
+            onTap: () => context.push('/journal'),
           ),
           const SizedBox(height: 16),
           _buildFeatureCard(
             context,
             icon: Icons.mood,
             title: 'Estado de Ánimo',
-            description: 'Próximamente en Sprint 3',
+            description: 'Registra cómo te sientes',
             color: Colors.green,
+            onTap: () => context.push('/mood-log'),
           ),
           const SizedBox(height: 32),
           if (user?.isPremium != true)
@@ -120,13 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Suscripciones - Próximamente en Sprint 4'),
-                          ),
-                        );
-                      },
+                      onPressed: () => context.push('/subscription'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: Theme.of(context).primaryColor,
@@ -143,24 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildStatsTab() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.bar_chart, size: 64, color: Colors.grey.shade400),
-          const SizedBox(height: 16),
-          Text(
-            'Estadísticas',
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Próximamente en Sprint 3',
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-        ],
-      ),
-    );
+    return const StatsScreen();
   }
 
   Widget _buildFeatureCard(
@@ -169,6 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
     required String title,
     required String description,
     required Color color,
+    VoidCallback? onTap,
   }) {
     return Card(
       child: ListTile(
@@ -179,11 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(title),
         subtitle: Text(description),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-        onTap: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('$title - $description')),
-          );
-        },
+        onTap: onTap,
       ),
     );
   }
