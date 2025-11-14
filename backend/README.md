@@ -363,7 +363,23 @@ npm test -- --coverage
 
 # Tests en modo watch
 npm run test:watch
+
+# Verificar conexión a MongoDB Atlas
+npm run test:connection
+
+# Poblar base de datos con datos de prueba
+npm run seed
 ```
+
+### Conexión a MongoDB Atlas
+
+Si tienes problemas conectando a MongoDB Atlas, ejecuta:
+
+```bash
+npm run test:connection
+```
+
+Este script verificará tu conexión y te dará información detallada sobre posibles problemas. Para más información sobre cómo configurar MongoDB Atlas, consulta [MONGODB_SETUP.md](./MONGODB_SETUP.md).
 
 ## Despliegue
 
