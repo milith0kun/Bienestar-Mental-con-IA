@@ -1,30 +1,74 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:flutter_application_6/main.dart';
+import 'package:mindflow/main.dart';
+import 'package:mindflow/presentation/screens/splash_screen.dart';
+import 'package:mindflow/presentation/screens/onboarding_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('MyApp builds successfully', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Verify that the app builds
+    expect(find.byType(MaterialApp), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('SplashScreen displays correctly', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: SplashScreen(),
+      ),
+    );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify splash screen content
+    expect(find.text('MindFlow'), findsOneWidget);
+    expect(find.text('Bienestar Mental con IA'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byIcon(Icons.self_improvement), findsOneWidget);
+  });
+
+  testWidgets('OnboardingScreen displays pages', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: OnboardingScreen(),
+      ),
+    );
+
+    // Verify first page content
+    expect(find.text('Meditaciones Guiadas'), findsOneWidget);
+    expect(find.byIcon(Icons.self_improvement), findsOneWidget);
+
+    // Find and tap next button
+    final nextButton = find.text('Siguiente');
+    expect(nextButton, findsOneWidget);
+
+    await tester.tap(nextButton);
+    await tester.pumpAndSettle();
+
+    // Verify second page content
+    expect(find.text('Diario Emocional con IA'), findsOneWidget);
+    expect(find.byIcon(Icons.book), findsOneWidget);
+
+    await tester.tap(nextButton);
+    await tester.pumpAndSettle();
+
+    // Verify third page content
+    expect(find.text('Seguimiento de Ánimo'), findsOneWidget);
+    expect(find.byIcon(Icons.mood), findsOneWidget);
+
+    // On last page, button should say "Comenzar"
+    expect(find.text('Comenzar'), findsOneWidget);
+  });
+
+  testWidgets('OnboardingScreen navigation buttons work',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: OnboardingScreen(),
+      ),
+    );
+
+    // Find "Ya tengo una cuenta" button
+    final loginButton = find.text('Ya tengo una cuenta');
+    expect(loginButton, findsOneWidget);
   });
 }

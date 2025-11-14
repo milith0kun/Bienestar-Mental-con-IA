@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/validators.dart';
+import '../../../data/services/google_sign_in_service.dart';
 import '../../providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -45,6 +46,46 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Colors.red,
         ),
       );
+    }
+  }
+
+  Future<void> _handleGoogleSignIn() async {
+    setState(() => _isLoading = true);
+
+    try {
+      final googleSignInService = GoogleSignInService();
+      final idToken = await googleSignInService.signIn();
+
+      if (idToken == null) {
+        // Usuario canceló el sign in
+        setState(() => _isLoading = false);
+        return;
+      }
+
+      final authProvider = context.read<AuthProvider>();
+      final success = await authProvider.loginWithGoogle(idToken);
+
+      setState(() => _isLoading = false);
+
+      if (!success && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content:
+                Text(authProvider.error ?? 'Error al iniciar sesión con Google'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -154,14 +195,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 24),
                 OutlinedButton.icon(
-                  onPressed: _isLoading ? null : () {
-                    // TODO: Implementar Google Sign In
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Google Sign In - Próximamente'),
-                      ),
-                    );
-                  },
+                  onPressed: _isLoading ? null : _handleGoogleSignIn,
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 56),
                   ),
